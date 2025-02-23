@@ -93,7 +93,7 @@ export default function Hero() {
             className="text-center md:text-left"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold uppercase leading-tight">
-              Multi-<br />Disciplinary<br />Designer
+              Innovate-<br />Technology<br />Strategy
             </h2>
           </motion.div>
           {/* Subtitle / Right Text */}
