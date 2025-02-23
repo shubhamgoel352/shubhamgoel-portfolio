@@ -41,12 +41,12 @@ export default function Hero() {
       />
 
       {/* Header / Navbar */}
-      <header className="absolute top-0 left-0 w-full flex items-center justify-between px-8 py-6 z-10">
+      {/* Desktop Header */}
+      <header className="hidden md:flex absolute top-0 left-0 w-full items-center justify-between px-8 py-6 z-10">
         {/* Left: Name */}
         <h1 className="text-white text-xl font-semibold uppercase tracking-widest">
           Shubham Goel
         </h1>
-
         {/* Center: Nav Links */}
         <nav className="flex space-x-8 text-sm font-medium">
           <a
@@ -62,22 +62,29 @@ export default function Hero() {
             About
           </a>
         </nav>
-
         {/* Right: Button */}
         <button className="border border-white text-white px-4 py-2 rounded-full text-xs uppercase hover:bg-white hover:text-black transition">
           Available
         </button>
       </header>
+      {/* Mobile Header */}
+      <header className="flex md:hidden absolute top-0 left-0 w-full items-center justify-between px-4 py-4 z-10">
+        <h1 className="text-white text-lg font-semibold uppercase tracking-widest">
+          Shubham Goel
+        </h1>
+        <button className="border border-white text-white px-3 py-1 rounded-full text-xs uppercase hover:bg-white hover:text-black transition">
+          Menu
+        </button>
+      </header>
 
-      {/* Side Label (Left) */}
-      <div className="absolute left-8 bottom-1/2 -rotate-90 origin-bottom text-xs text-gray-400 uppercase tracking-wider z-10">
+      {/* Side Label (Desktop Only) */}
+      <div className="hidden md:block absolute left-8 bottom-1/2 -rotate-90 origin-bottom text-xs text-gray-400 uppercase tracking-wider z-10">
         Cu / on - scroll &gt;
       </div>
 
       {/* Main Hero Content */}
-      <div className="relative z-10 flex h-full w-full items-center justify-center">
-        {/* Big Title & Right Text */}
-        <div className="w-full max-w-7xl px-8 flex flex-col md:flex-row items-center justify-center md:justify-between text-white">
+      <div className="relative z-10 flex h-full w-full items-center justify-center px-4">
+        <div className="w-full max-w-7xl flex flex-col md:flex-row items-center justify-center md:justify-between text-white">
           {/* Big Bold Title */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -85,17 +92,16 @@ export default function Hero() {
             transition={{ duration: 1 }}
             className="text-center md:text-left"
           >
-            <h2 className="text-5xl md:text-8xl font-extrabold uppercase leading-tight">
-              Innovate<br />Technology<br />Strategy
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold uppercase leading-tight">
+              Multi-<br />Disciplinary<br />Designer
             </h2>
           </motion.div>
-
           {/* Subtitle / Right Text */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="mt-8 md:mt-0 md:max-w-sm text-gray-300 text-sm md:text-base text-right"
+            className="mt-6 md:mt-0 md:max-w-sm text-gray-300 text-xs sm:text-sm md:text-base text-right"
           >
             Creative thinking and problem solving are where my mind wanders,
             using my knowledge and passion for design as my medium.
@@ -109,7 +115,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 1 }}
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center w-16 h-16 border border-white rounded-full cursor-pointer z-10"
+        className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 flex items-center justify-center w-16 h-16 border border-white rounded-full cursor-pointer z-10"
       >
         <motion.svg
           xmlns="http://www.w3.org/2000/svg"
