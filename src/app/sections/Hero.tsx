@@ -35,7 +35,7 @@ export default function Hero() {
       <motion.div
         className="absolute inset-0 pointer-events-none z-[6]"
         animate={{
-          background: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.08), transparent 60%)`,
+          background: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.08), transparent 30%)`,
         }}
         transition={{ duration: 0.2 }}
       />
