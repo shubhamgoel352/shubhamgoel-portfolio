@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Hero from "./sections/Hero";
-import About from "./sections/AboutPreview";
 import Projects from "./sections/Projects";
 import AboutPreview from "./sections/AboutPreview";
 

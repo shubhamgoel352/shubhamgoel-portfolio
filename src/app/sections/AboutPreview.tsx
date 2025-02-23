@@ -18,7 +18,7 @@ export default function AboutPreview() {
           }}
           className="whitespace-nowrap text-9xl font-extrabold uppercase text-white"
         >
-          SHUBHAM GOEL -&nbsp;SHUBHAM GOEL -&nbsp; SHUBHAM GOEL -&nbsp; SHUBHAM GOEL -&nbsp;
+          SHUBHAM GOEL &nbsp; SHUBHAM GOEL &nbsp; SHUBHAM GOEL &nbsp; SHUBHAM GOEL &nbsp;
         </motion.div>
       </div>
 
@@ -26,7 +26,7 @@ export default function AboutPreview() {
         {/* Left Column: Intro Text */}
         <div className="w-full md:w-1/3 text-left">
           <p className="text-sm uppercase tracking-wider text-gray-400">
-            Hello, my name's Shubham. I was a senior designer at MNO where I create products, websites &amp; Airspaces.
+            Hello, my name&apos;s Shubham. I was a senior designer at MNO where I create products, websites &amp; Airspaces.
           </p>
         </div>
 
