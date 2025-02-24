@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, useEffect } from "react";
+import { useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,8 +15,7 @@ function seededRandom(seedRef: { current: number }) {
 }
 
 export default function AboutPreview() {
-  // Generate star positions with a stable seed
-  const seedRef = useRef<number>(123); // any seed you like
+  const seedRef = useRef<number>(123); // Any seed you like
   const stars = useMemo(() => {
     const starCount = 40;
     const newStars = [];
@@ -30,46 +29,34 @@ export default function AboutPreview() {
     return newStars;
   }, []);
 
-  // We force the same output by rounding the numbers.
-  const formatStarStyle = (star: {
-    x: number;
-    y: number;
-    size: number;
-  }) => {
-    return {
-      left: `${(star.x * 100).toFixed(4)}%`,
-      top: `${(star.y * 100).toFixed(4)}%`,
-      width: `${star.size.toFixed(2)}px`,
-      height: `${star.size.toFixed(2)}px`,
-    };
-  };
-
   return (
-    <section
-      suppressHydrationWarning
-      className="relative w-full min-h-screen snap-start bg-gradient-to-br from-black via-[#0a0a0a] to-black text-white overflow-hidden px-4 sm:px-8 py-8 sm:py-16"
-    >
-      {/* 1) Large rotating pink circle */}
+    <section className="relative w-full min-h-screen snap-start bg-gradient-to-br from-black via-[#0a0a0a] to-black text-white overflow-hidden px-4 sm:px-8 py-8 sm:py-16">
+      {/* Large rotating pink circle */}
       <motion.div
         className="absolute w-[800px] h-[800px] bg-pink-600 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-3xl opacity-20 z-0"
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
       />
 
-      {/* 2) Smaller rotating blue circle */}
+      {/* Smaller rotating blue circle */}
       <motion.div
         className="absolute w-[400px] h-[400px] bg-blue-500 rounded-full top-[30%] left-[70%] blur-2xl opacity-20 z-0"
         animate={{ rotate: -360 }}
         transition={{ repeat: Infinity, duration: 45, ease: "linear" }}
       />
 
-      {/* 3) Starfield (seeded random with fixed values) */}
+      {/* Starfield (seeded random) */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden z-0">
         {stars.map((star, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-white"
-            style={formatStarStyle(star)}
+            style={{
+              left: `${(star.x * 100).toFixed(4)}%`,
+              top: `${(star.y * 100).toFixed(4)}%`,
+              width: `${star.size.toFixed(2)}px`,
+              height: `${star.size.toFixed(2)}px`,
+            }}
             animate={{ opacity: [0.1, 1, 0.1] }}
             transition={{
               repeat: Infinity,
@@ -101,7 +88,6 @@ export default function AboutPreview() {
             I blend creativity and technology to build immersive experiences.
             Explore my journey as I transform ideas into reality.
           </motion.p>
-
           {/* "Read More" Button */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
