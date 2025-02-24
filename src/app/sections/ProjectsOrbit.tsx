@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion, useMotionValue, useTransform, MotionValue } from "framer-motion";
 import Link from "next/link";
 
 const projectsData = [
@@ -20,7 +20,7 @@ const marqueeItems = [...projectsData, ...projectsData];
 interface ProjectCardProps {
   item: { title: string; href: string };
   index: number;
-  x: ReturnType<typeof useMotionValue>;
+  x: MotionValue<number>;
   containerWidth: number;
   itemWidth: number;
   CARD_WIDTH: number;
@@ -37,12 +37,12 @@ export function ProjectCard({
   GAP,
 }: ProjectCardProps) {
   const basePos = index * itemWidth + CARD_WIDTH / 2;
-  const scale = useTransform(x, (currentX) => {
+  const scale = useTransform(x, (currentX: number) => {
     const effectivePos = basePos + currentX;
     const center = containerWidth / 2;
     const distance = Math.abs(effectivePos - center);
-    const maxDistance = 250;
-    const scaleFactor = 0.3;
+    const maxDistance = 250; // adjust for stronger effect
+    const scaleFactor = 0.3; // scales down to 0.7 at farthest
     return 1 - Math.min(distance / maxDistance, 1) * scaleFactor;
   });
 
@@ -69,7 +69,7 @@ export function ProjectCard({
 export default function ProjectsOrbit() {
   const CARD_WIDTH = 240; // in px
   const GAP = 8; // in px (tighter spacing)
-  const SPEED = 1.0; // increased auto-scroll speed (pixels per frame)
+  const SPEED = 1.0; // auto-scroll speed (pixels per frame)
   const itemWidth = CARD_WIDTH + GAP;
   const totalWidth = itemWidth * marqueeItems.length;
   const containerWidth = 1000; // assumed container width for convex scaling
