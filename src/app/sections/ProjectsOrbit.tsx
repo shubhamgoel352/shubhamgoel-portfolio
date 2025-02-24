@@ -15,26 +15,70 @@ const projectsData = [
   { title: "Product Design", href: "/projects/product-design" },
 ];
 
-// Duplicate for seamless looping
 const marqueeItems = [...projectsData, ...projectsData];
 
+interface ProjectCardProps {
+  item: { title: string; href: string };
+  index: number;
+  x: ReturnType<typeof useMotionValue>;
+  containerWidth: number;
+  itemWidth: number;
+  CARD_WIDTH: number;
+  GAP: number;
+}
+
+export function ProjectCard({
+  item,
+  index,
+  x,
+  containerWidth,
+  itemWidth,
+  CARD_WIDTH,
+  GAP,
+}: ProjectCardProps) {
+  const basePos = index * itemWidth + CARD_WIDTH / 2;
+  const scale = useTransform(x, (currentX) => {
+    const effectivePos = basePos + currentX;
+    const center = containerWidth / 2;
+    const distance = Math.abs(effectivePos - center);
+    const maxDistance = 250;
+    const scaleFactor = 0.3;
+    return 1 - Math.min(distance / maxDistance, 1) * scaleFactor;
+  });
+
+  return (
+    <motion.div
+      className="flex-shrink-0 h-64"
+      style={{ width: CARD_WIDTH, marginRight: GAP, scale }}
+    >
+      <motion.div
+        className="bg-gray-800 rounded-xl shadow-md h-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform duration-300"
+        whileTap={{ scale: 0.95 }}
+      >
+        <Link
+          href={item.href}
+          className="text-center px-4 flex items-center justify-center h-full w-full"
+        >
+          {item.title}
+        </Link>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function ProjectsOrbit() {
-  const CARD_WIDTH = 240; // card width in px
-  const GAP = 16; // gap between cards
-  const SPEED = 0.6; // auto-scroll speed (pixels per frame)
+  const CARD_WIDTH = 240; // in px
+  const GAP = 8; // in px (tighter spacing)
+  const SPEED = 1.0; // increased auto-scroll speed (pixels per frame)
   const itemWidth = CARD_WIDTH + GAP;
-  // Total width of the marquee track (duplicated array)
   const totalWidth = itemWidth * marqueeItems.length;
-  // Container width (assumed fixed for this effect)
-  const containerWidth = 1000;
+  const containerWidth = 1000; // assumed container width for convex scaling
 
   const [isDragging, setIsDragging] = useState(false);
   const [isUserScrolling, setIsUserScrolling] = useState(false);
   const x = useMotionValue(0);
-
   const wheelTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Auto-scroll loop
   useEffect(() => {
     let frame: number;
     const loop = () => {
@@ -71,48 +115,25 @@ export default function ProjectsOrbit() {
       <p className="text-gray-400 mb-8 uppercase">Hover, Drag or Scroll</p>
       <div className="w-full overflow-hidden" onWheel={handleWheel}>
         <motion.div
-          className="flex gap-4"
+          className="flex gap-2"
           style={{ x }}
           drag="x"
           dragConstraints={{ left: -totalWidth, right: 0 }}
           onDragStart={() => setIsDragging(true)}
           onDragEnd={handleDragEnd}
         >
-          {marqueeItems.map((item, i) => {
-            // Compute base position for each card's center relative to container's left edge.
-            // Each card's center (if no translation) is:
-            const basePos = i * itemWidth + CARD_WIDTH / 2;
-            // Transform the container's x motion value into a scale for the card based on its effective position.
-            // The center of the container (in our coordinate space) is containerWidth / 2.
-            const scale = useTransform(x, (currentX) => {
-              const effectivePos = basePos + currentX;
-              const center = containerWidth / 2;
-              const distance = Math.abs(effectivePos - center);
-              const maxDistance = 300; // maximum distance for scaling effect
-              const scaleFactor = 0.2; // maximum reduction, i.e. cards scale down to 0.8 at farthest.
-              const computedScale = 1 - Math.min(distance / maxDistance, 1) * scaleFactor;
-              return computedScale;
-            });
-            return (
-              <motion.div
-                key={`${item.title}-${i}`}
-                className="flex-shrink-0 h-64"
-                style={{ width: CARD_WIDTH, marginRight: GAP, scale }}
-              >
-                <motion.div
-                  className="bg-gray-800 rounded-xl shadow-md h-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform duration-300"
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link
-                    href={item.href}
-                    className="text-center px-4 flex items-center justify-center h-full w-full"
-                  >
-                    {item.title}
-                  </Link>
-                </motion.div>
-              </motion.div>
-            );
-          })}
+          {marqueeItems.map((item, i) => (
+            <ProjectCard
+              key={`${item.title}-${i}`}
+              item={item}
+              index={i}
+              x={x}
+              containerWidth={containerWidth}
+              itemWidth={itemWidth}
+              CARD_WIDTH={CARD_WIDTH}
+              GAP={GAP}
+            />
+          ))}
         </motion.div>
       </div>
     </section>
