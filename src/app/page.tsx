@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import Hero from "./sections/Hero";
 import Projects from "./sections/Projects";
 import AboutPreview from "./sections/AboutPreview";
+import ProjectsOrbit from "./sections/ProjectsOrbit";
+
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -16,7 +18,7 @@ export default function Home() {
     <main className={`${inter.className}`}>
       <Hero />
       <AboutPreview />
-      <Projects />
+      <ProjectsOrbit />
     </main>
   );
 }
