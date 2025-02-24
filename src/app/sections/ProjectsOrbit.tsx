@@ -41,7 +41,7 @@ export function ProjectCard({
     const effectivePos = basePos + currentX;
     const center = containerWidth / 2;
     const distance = Math.abs(effectivePos - center);
-    const maxDistance = 250; // adjust for stronger effect
+    const maxDistance = 250; // for a stronger effect, reduce this value
     const scaleFactor = 0.3; // scales down to 0.7 at farthest
     return 1 - Math.min(distance / maxDistance, 1) * scaleFactor;
   });
@@ -67,12 +67,27 @@ export function ProjectCard({
 }
 
 export default function ProjectsOrbit() {
-  const CARD_WIDTH = 240; // in px
-  const GAP = 8; // in px (tighter spacing)
-  const SPEED = 1.0; // auto-scroll speed (pixels per frame)
+  // Dynamically update container width and card width for mobile responsiveness.
+  const [containerWidth, setContainerWidth] = useState<number>(1000);
+  const [CARD_WIDTH, setCardWidth] = useState<number>(240);
+  const GAP = 8; // in px
+  const SPEED = 1.0; // auto-scroll speed in pixels per frame
+
+  useEffect(() => {
+    const handleResize = () => {
+      const winWidth = window.innerWidth;
+      // Use the smaller of window width and 1000 as container width.
+      setContainerWidth(winWidth < 1000 ? winWidth : 1000);
+      // For very small screens, reduce card width proportionally.
+      setCardWidth(winWidth < 600 ? winWidth * 0.8 : 240);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const itemWidth = CARD_WIDTH + GAP;
   const totalWidth = itemWidth * marqueeItems.length;
-  const containerWidth = 1000; // assumed container width for convex scaling
 
   const [isDragging, setIsDragging] = useState(false);
   const [isUserScrolling, setIsUserScrolling] = useState(false);
