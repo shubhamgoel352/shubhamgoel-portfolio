@@ -1,32 +1,94 @@
 "use client";
 
+import { useMemo, useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
+/**
+ * A small seeded random utility so SSR & client match.
+ * Each call returns a stable pseudo-random in [0,1).
+ */
+function seededRandom(seedRef: { current: number }) {
+  const x = Math.sin(seedRef.current++) * 10000;
+  return x - Math.floor(x);
+}
+
 export default function AboutPreview() {
+  // Generate star positions with a stable seed
+  const seedRef = useRef<number>(123); // any seed you like
+  const stars = useMemo(() => {
+    const starCount = 40;
+    const newStars = [];
+    for (let i = 0; i < starCount; i++) {
+      const x = seededRandom(seedRef); // [0..1)
+      const y = seededRandom(seedRef);
+      const size = 1 + seededRandom(seedRef) * 2; // between 1 and 3
+      const duration = 2 + seededRandom(seedRef) * 2; // flicker 2-4s
+      newStars.push({ x, y, size, duration });
+    }
+    return newStars;
+  }, []);
+
+  // We force the same output by rounding the numbers.
+  const formatStarStyle = (star: {
+    x: number;
+    y: number;
+    size: number;
+  }) => {
+    return {
+      left: `${(star.x * 100).toFixed(4)}%`,
+      top: `${(star.y * 100).toFixed(4)}%`,
+      width: `${star.size.toFixed(2)}px`,
+      height: `${star.size.toFixed(2)}px`,
+    };
+  };
+
   return (
-    <section className="relative w-full min-h-screen snap-start bg-gradient-to-br from-black via-[#0a0a0a] to-black text-white overflow-hidden px-4 sm:px-8 py-8 sm:py-16">
-      {/* Optional Animated Background Gradient */}
+    <section
+      suppressHydrationWarning
+      className="relative w-full min-h-screen snap-start bg-gradient-to-br from-black via-[#0a0a0a] to-black text-white overflow-hidden px-4 sm:px-8 py-8 sm:py-16"
+    >
+      {/* 1) Large rotating pink circle */}
       <motion.div
-        initial={{ opacity: 0.8 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 2 }}
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%)",
-        }}
+        className="absolute w-[800px] h-[800px] bg-pink-600 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-3xl opacity-20 z-0"
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
       />
 
+      {/* 2) Smaller rotating blue circle */}
+      <motion.div
+        className="absolute w-[400px] h-[400px] bg-blue-500 rounded-full top-[30%] left-[70%] blur-2xl opacity-20 z-0"
+        animate={{ rotate: -360 }}
+        transition={{ repeat: Infinity, duration: 45, ease: "linear" }}
+      />
+
+      {/* 3) Starfield (seeded random with fixed values) */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden z-0">
+        {stars.map((star, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={formatStarStyle(star)}
+            animate={{ opacity: [0.1, 1, 0.1] }}
+            transition={{
+              repeat: Infinity,
+              duration: star.duration,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
+
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col md:flex-row items-center justify-center min-h-screen gap-8">
+      <div className="relative z-10 flex flex-col md:flex-row items-center justify-center min-h-screen gap-12">
         {/* Left Column: Animated Intro Text */}
-        <div className="md:w-1/2 space-y-4 text-left">
+        <div className="md:w-1/2 space-y-6 text-left">
           <motion.h1
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 1.2 }}
-            className="text-2xl sm:text-3xl md:text-5xl font-bold uppercase tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight leading-tight"
           >
             Discover My Story
           </motion.h1>
@@ -34,13 +96,13 @@ export default function AboutPreview() {
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.3 }}
-            className="text-sm sm:text-base md:text-lg text-gray-400"
+            className="text-sm sm:text-base md:text-lg text-gray-300"
           >
             I blend creativity and technology to build immersive experiences.
             Explore my journey as I transform ideas into reality.
           </motion.p>
 
-          {/* New "Read More" Button */}
+          {/* "Read More" Button */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -55,7 +117,7 @@ export default function AboutPreview() {
           </motion.div>
         </div>
 
-        {/* Right Column: Interactive Profile Image with Tilt, Zoom & Hover Overlay */}
+        {/* Right Column: Interactive Profile Image */}
         <div className="md:w-1/2 flex justify-center items-center mt-8 md:mt-0">
           <motion.div
             className="relative w-56 sm:w-64 md:w-72 h-56 sm:h-64 md:h-72 rounded-2xl overflow-hidden shadow-2xl cursor-pointer"
@@ -87,33 +149,6 @@ export default function AboutPreview() {
             </motion.div>
           </motion.div>
         </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 w-full flex justify-center items-center">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          className="flex flex-col items-center"
-        >
-          <span className="text-xs sm:text-sm text-gray-400 uppercase mb-2">Scroll</span>
-          <motion.svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="white"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-5 h-5 sm:w-6 sm:h-6"
-            initial={{ y: 0 }}
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-          >
-            <path d="M7 17l9-9M17 7l-9 9" />
-          </motion.svg>
-        </motion.div>
       </div>
     </section>
   );
