@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AboutPreview() {
   return (
@@ -38,6 +39,20 @@ export default function AboutPreview() {
             I blend creativity and technology to build immersive experiences.
             Explore my journey as I transform ideas into reality.
           </motion.p>
+
+          {/* New "Read More" Button */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.2, delay: 0.5 }}
+          >
+            <Link
+              href="/about"
+              className="inline-block bg-transparent border border-white text-white px-6 py-3 rounded-full uppercase tracking-wider hover:bg-white hover:text-black transition duration-300"
+            >
+              Read More
+            </Link>
+          </motion.div>
         </div>
 
         {/* Right Column: Interactive Profile Image with Tilt, Zoom & Hover Overlay */}
