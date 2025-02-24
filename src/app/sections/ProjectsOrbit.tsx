@@ -15,21 +15,26 @@ const projectsData = [
   { title: "Product Design", href: "/projects/product-design" },
 ];
 
+// Duplicate for seamless looping
 const marqueeItems = [...projectsData, ...projectsData];
 
 export default function ProjectsOrbit() {
-  const CARD_WIDTH = 240; // in px
-  const GAP = 8; // in px (tighter spacing)
-  const SPEED = 1.0; // increased auto-scroll speed
+  const CARD_WIDTH = 240; // card width in px
+  const GAP = 16; // gap between cards
+  const SPEED = 0.6; // auto-scroll speed (pixels per frame)
   const itemWidth = CARD_WIDTH + GAP;
+  // Total width of the marquee track (duplicated array)
   const totalWidth = itemWidth * marqueeItems.length;
-  const containerWidth = 1000; // assumed container width for convex scaling
+  // Container width (assumed fixed for this effect)
+  const containerWidth = 1000;
 
   const [isDragging, setIsDragging] = useState(false);
   const [isUserScrolling, setIsUserScrolling] = useState(false);
   const x = useMotionValue(0);
+
   const wheelTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Auto-scroll loop
   useEffect(() => {
     let frame: number;
     const loop = () => {
@@ -66,7 +71,7 @@ export default function ProjectsOrbit() {
       <p className="text-gray-400 mb-8 uppercase">Hover, Drag or Scroll</p>
       <div className="w-full overflow-hidden" onWheel={handleWheel}>
         <motion.div
-          className="flex gap-2"
+          className="flex gap-4"
           style={{ x }}
           drag="x"
           dragConstraints={{ left: -totalWidth, right: 0 }}
@@ -74,17 +79,20 @@ export default function ProjectsOrbit() {
           onDragEnd={handleDragEnd}
         >
           {marqueeItems.map((item, i) => {
+            // Compute base position for each card's center relative to container's left edge.
+            // Each card's center (if no translation) is:
             const basePos = i * itemWidth + CARD_WIDTH / 2;
+            // Transform the container's x motion value into a scale for the card based on its effective position.
+            // The center of the container (in our coordinate space) is containerWidth / 2.
             const scale = useTransform(x, (currentX) => {
               const effectivePos = basePos + currentX;
               const center = containerWidth / 2;
               const distance = Math.abs(effectivePos - center);
-              const maxDistance = 250; // reduce this for a stronger effect
-              const scaleFactor = 0.3; // further from center scales down to 0.7
+              const maxDistance = 300; // maximum distance for scaling effect
+              const scaleFactor = 0.2; // maximum reduction, i.e. cards scale down to 0.8 at farthest.
               const computedScale = 1 - Math.min(distance / maxDistance, 1) * scaleFactor;
               return computedScale;
             });
-
             return (
               <motion.div
                 key={`${item.title}-${i}`}
