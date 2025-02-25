@@ -1,21 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function Hero() {
-  // Optional: Ripple effect tracking mouse position
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Background Video */}
