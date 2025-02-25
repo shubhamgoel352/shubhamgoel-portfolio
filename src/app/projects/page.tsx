@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -41,19 +41,12 @@ const projects = [
 ];
 
 export default function ProjectsPage() {
-  const [scrollY, setScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <section className="relative w-full min-h-screen bg-black text-white overflow-hidden">
+    <section className="relative w-full min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white overflow-hidden">
       
-      {/* 🔹 Sticky Header - Mobile & Desktop */}
+      {/* 🔹 Sticky Header */}
       <header className="fixed top-0 left-0 w-full flex items-center justify-between px-6 sm:px-8 py-4 bg-black bg-opacity-80 backdrop-blur-md z-50">
         <h1 className="text-white text-lg sm:text-xl font-semibold uppercase tracking-widest">
           Shubham Goel
