@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+// Projects Data
 const projects = [
   {
     title: "AI Innovation Hub",
@@ -30,6 +31,12 @@ const projects = [
     image: "/sustainable_technology_hub.jpg",
     link: "/projects/sustainable-tech",
   },
+  {
+    title: "Health & Safety Data Migration",
+    description: "Seamlessly migrating crucial health and safety data to modern platforms.",
+    image: "/health_safety_data_migration.jpg",
+    link: "/projects/healthsafety",
+  },
 ];
 
 export default function ProjectsPage() {
@@ -43,7 +50,26 @@ export default function ProjectsPage() {
 
   return (
     <section className="relative w-full min-h-screen bg-black text-white overflow-hidden">
-      {/* Hero Section */}
+      
+      {/* 🔹 Sticky Header (Matches Homepage) */}
+      <header className="fixed top-0 left-0 w-full flex items-center justify-between px-8 py-4 bg-black bg-opacity-80 backdrop-blur-md z-50">
+        <h1 className="text-white text-xl font-semibold uppercase tracking-widest">
+          Shubham Goel
+        </h1>
+        <nav className="flex space-x-8 text-sm font-medium">
+          <Link href="/projects">
+            <span className="text-gray-300 hover:text-white transition-colors uppercase cursor-pointer">Projects</span>
+          </Link>
+          <Link href="/about">
+            <span className="text-gray-300 hover:text-white transition-colors uppercase cursor-pointer">About</span>
+          </Link>
+        </nav>
+        <button className="border border-white text-white px-4 py-2 rounded-full text-xs uppercase hover:bg-white hover:text-black transition">
+          Contact Me
+        </button>
+      </header>
+
+      {/* 🔹 Hero Section */}
       <div className="relative h-screen flex flex-col justify-center items-center text-center px-6">
         <motion.h1
           initial={{ opacity: 0, y: 50 }}
@@ -62,7 +88,7 @@ export default function ProjectsPage() {
           A collection of projects that define the intersection of creativity, technology, and impact.
         </motion.p>
 
-        {/* Scroll Indicator - Mobile & Desktop Compatible */}
+        {/* 🔹 Scroll Indicator */}
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
@@ -84,7 +110,7 @@ export default function ProjectsPage() {
         </motion.div>
       </div>
 
-      {/* Projects Grid */}
+      {/* 🔹 Projects Grid */}
       <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-8 md:px-16 py-12">
         {projects.map((project, index) => (
           <motion.div
@@ -115,7 +141,7 @@ export default function ProjectsPage() {
         ))}
       </div>
 
-      {/* Scrolling Background Effect */}
+      {/* 🔹 Scrolling Background Effect */}
       <motion.div
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         animate={{ y: -scrollY * 0.3 }}
