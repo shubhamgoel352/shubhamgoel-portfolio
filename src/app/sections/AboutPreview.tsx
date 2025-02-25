@@ -15,37 +15,35 @@ function seededRandom(seedRef: { current: number }) {
 }
 
 export default function AboutPreview() {
-  const seedRef = useRef<number>(123); // Any seed you like
+  const seedRef = useRef<number>(123);
   const stars = useMemo(() => {
     const starCount = 40;
     const newStars = [];
     for (let i = 0; i < starCount; i++) {
-      const x = seededRandom(seedRef); // [0..1)
+      const x = seededRandom(seedRef);
       const y = seededRandom(seedRef);
-      const size = 1 + seededRandom(seedRef) * 2; // between 1 and 3
-      const duration = 2 + seededRandom(seedRef) * 2; // flicker 2-4s
+      const size = 1 + seededRandom(seedRef) * 2;
+      const duration = 2 + seededRandom(seedRef) * 2;
       newStars.push({ x, y, size, duration });
     }
     return newStars;
   }, []);
 
   return (
-    <section className="relative w-full min-h-screen snap-start bg-gradient-to-br from-black via-[#0a0a0a] to-black text-white overflow-hidden px-4 sm:px-8 py-8 sm:py-16">
-      {/* Large rotating pink circle */}
+    <section className="relative w-full min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-black text-white overflow-hidden px-6 sm:px-12 py-8 sm:py-16">
+      {/* Background Effects */}
       <motion.div
         className="absolute w-[800px] h-[800px] bg-pink-600 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-3xl opacity-20 z-0"
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
       />
-
-      {/* Smaller rotating blue circle */}
       <motion.div
         className="absolute w-[400px] h-[400px] bg-blue-500 rounded-full top-[30%] left-[70%] blur-2xl opacity-20 z-0"
         animate={{ rotate: -360 }}
         transition={{ repeat: Infinity, duration: 45, ease: "linear" }}
       />
 
-      {/* Starfield (seeded random) */}
+      {/* Starfield */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden z-0">
         {stars.map((star, i) => (
           <motion.div
@@ -69,8 +67,8 @@ export default function AboutPreview() {
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col md:flex-row items-center justify-center min-h-screen gap-12">
-        {/* Left Column: Animated Intro Text */}
-        <div className="md:w-1/2 space-y-6 text-left">
+        {/* Left Column: Text */}
+        <div className="md:w-1/2 space-y-6 text-center md:text-left">
           <motion.h1
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -88,23 +86,26 @@ export default function AboutPreview() {
             I blend creativity and technology to build immersive experiences.
             Explore my journey as I transform ideas into reality.
           </motion.p>
-          {/* "Read More" Button */}
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.5 }}
-          >
-            <Link
-              href="/about"
-              className="inline-block bg-transparent border border-white text-white px-6 py-3 rounded-full uppercase tracking-wider hover:bg-white hover:text-black transition duration-300"
+
+          {/* "Read More" Button - Only for Desktop */}
+          <div className="hidden md:block">
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 1.2, delay: 0.5 }}
             >
-              Read More
-            </Link>
-          </motion.div>
+              <Link
+                href="/about"
+                className="inline-block bg-transparent border border-white text-white px-6 py-3 rounded-full uppercase tracking-wider hover:bg-white hover:text-black transition duration-300"
+              >
+                Read More
+              </Link>
+            </motion.div>
+          </div>
         </div>
 
-        {/* Right Column: Interactive Profile Image */}
-        <div className="md:w-1/2 flex justify-center items-center mt-8 md:mt-0">
+        {/* Right Column: Image */}
+        <div className="md:w-1/2 flex flex-col items-center">
           <motion.div
             className="relative w-56 sm:w-64 md:w-72 h-56 sm:h-64 md:h-72 rounded-2xl overflow-hidden shadow-2xl cursor-pointer"
             initial={{ scale: 0.8, rotateY: -10 }}
@@ -134,6 +135,22 @@ export default function AboutPreview() {
               </motion.span>
             </motion.div>
           </motion.div>
+
+          {/* "Read More" Button - Only for Mobile (Appears Below the Image) */}
+          <div className="block md:hidden mt-6">
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 1.2, delay: 0.5 }}
+            >
+              <Link
+                href="/about"
+                className="inline-block bg-transparent border border-white text-white px-6 py-3 rounded-full uppercase tracking-wider hover:bg-white hover:text-black transition duration-300"
+              >
+                Read More
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
