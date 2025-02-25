@@ -49,7 +49,7 @@ export default function ProjectsPage() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="text-4xl sm:text-6xl md:text-7xl font-bold uppercase tracking-wide"
+          className="text-3xl sm:text-5xl md:text-6xl font-bold uppercase tracking-wide"
         >
           Explore My Work
         </motion.h1>
@@ -57,14 +57,35 @@ export default function ProjectsPage() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="mt-4 text-lg sm:text-xl text-gray-300 max-w-2xl"
+          className="mt-4 text-sm sm:text-lg md:text-xl text-gray-300 max-w-lg md:max-w-2xl"
         >
           A collection of projects that define the intersection of creativity, technology, and impact.
         </motion.p>
+
+        {/* Scroll Indicator - Mobile & Desktop Compatible */}
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          className="absolute bottom-6 sm:bottom-10 flex flex-col items-center opacity-100"
+        >
+          <span className="text-xs sm:text-sm text-gray-400">Scroll Down</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 sm:w-8 h-6 sm:h-8 text-gray-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M19 9l-7 7-7-7" />
+          </svg>
+        </motion.div>
       </div>
 
       {/* Projects Grid */}
-      <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 sm:px-12 lg:px-20 py-20">
+      <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-8 md:px-16 py-12">
         {projects.map((project, index) => (
           <motion.div
             key={index}
@@ -79,13 +100,13 @@ export default function ProjectsPage() {
               alt={project.title}
               width={600}
               height={400}
-              className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+              className="w-full h-48 sm:h-64 md:h-72 object-cover transition-transform duration-500 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <h2 className="text-2xl font-bold">{project.title}</h2>
-              <p className="text-gray-300 text-sm mt-2">{project.description}</p>
-              <Link href={project.link} className="mt-4">
-                <span className="inline-block bg-white text-black px-6 py-2 rounded-full font-medium uppercase tracking-wide hover:bg-gray-300 transition">
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-4 sm:p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <h2 className="text-lg sm:text-2xl font-bold">{project.title}</h2>
+              <p className="text-gray-300 text-xs sm:text-sm mt-1 sm:mt-2">{project.description}</p>
+              <Link href={project.link} className="mt-3">
+                <span className="inline-block bg-white text-black px-4 sm:px-6 py-2 rounded-full font-medium uppercase tracking-wide hover:bg-gray-300 transition text-xs sm:text-sm">
                   View Project
                 </span>
               </Link>
@@ -99,7 +120,7 @@ export default function ProjectsPage() {
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         animate={{ y: -scrollY * 0.3 }}
       >
-        <div className="absolute w-[1000px] h-[1000px] bg-blue-600 opacity-10 blur-3xl top-[20%] left-[50%] transform -translate-x-1/2" />
+        <div className="absolute w-[800px] sm:w-[1000px] h-[800px] sm:h-[1000px] bg-blue-600 opacity-10 blur-3xl top-[20%] left-[50%] transform -translate-x-1/2" />
       </motion.div>
     </section>
   );
