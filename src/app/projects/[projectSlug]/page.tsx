@@ -2,9 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import { FaShieldAlt, FaCloud, FaSyncAlt, FaBrain } from "react-icons/fa";
+import { FaShieldAlt, FaCloud, FaBrain } from "react-icons/fa"; // Removed FaSyncAlt
 
 const projectData = {
   healthsafety: {
