@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 // Projects Data
 const projects = [
@@ -41,6 +42,7 @@ const projects = [
 
 export default function ProjectsPage() {
   const [scrollY, setScrollY] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -51,12 +53,17 @@ export default function ProjectsPage() {
   return (
     <section className="relative w-full min-h-screen bg-black text-white overflow-hidden">
       
-      {/* 🔹 Sticky Header (Matches Homepage) */}
-      <header className="fixed top-0 left-0 w-full flex items-center justify-between px-8 py-4 bg-black bg-opacity-80 backdrop-blur-md z-50">
-        <h1 className="text-white text-xl font-semibold uppercase tracking-widest">
+      {/* 🔹 Sticky Header - Mobile & Desktop */}
+      <header className="fixed top-0 left-0 w-full flex items-center justify-between px-6 sm:px-8 py-4 bg-black bg-opacity-80 backdrop-blur-md z-50">
+        <h1 className="text-white text-lg sm:text-xl font-semibold uppercase tracking-widest">
           Shubham Goel
         </h1>
-        <nav className="flex space-x-8 text-sm font-medium">
+
+        {/* Desktop Navigation */}
+        <nav className="hidden sm:flex space-x-6 text-sm font-medium">
+          <Link href="/">
+            <span className="text-gray-300 hover:text-white transition-colors uppercase cursor-pointer">Home</span>
+          </Link>
           <Link href="/projects">
             <span className="text-gray-300 hover:text-white transition-colors uppercase cursor-pointer">Projects</span>
           </Link>
@@ -64,10 +71,35 @@ export default function ProjectsPage() {
             <span className="text-gray-300 hover:text-white transition-colors uppercase cursor-pointer">About</span>
           </Link>
         </nav>
-        <button className="border border-white text-white px-4 py-2 rounded-full text-xs uppercase hover:bg-white hover:text-black transition">
+
+        {/* Contact Me Button - Desktop Only */}
+        <button className="hidden sm:block border border-white text-white px-4 py-2 rounded-full text-xs uppercase hover:bg-white hover:text-black transition">
           Contact Me
         </button>
+
+        {/* Mobile Menu Icon */}
+        <button className="sm:hidden text-white" onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+        </button>
       </header>
+
+      {/* Mobile Navigation Menu */}
+      {menuOpen && (
+        <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-90 flex flex-col items-center justify-center z-40 sm:hidden">
+          <Link href="/" className="text-white text-xl py-2" onClick={() => setMenuOpen(false)}>
+            Home
+          </Link>
+          <Link href="/projects" className="text-white text-xl py-2" onClick={() => setMenuOpen(false)}>
+            Projects
+          </Link>
+          <Link href="/about" className="text-white text-xl py-2" onClick={() => setMenuOpen(false)}>
+            About
+          </Link>
+          <button className="mt-4 border border-white text-white px-6 py-2 rounded-full text-lg uppercase hover:bg-white hover:text-black transition">
+            Contact Me
+          </button>
+        </div>
+      )}
 
       {/* 🔹 Hero Section */}
       <div className="relative h-screen flex flex-col justify-center items-center text-center px-6">
@@ -140,14 +172,6 @@ export default function ProjectsPage() {
           </motion.div>
         ))}
       </div>
-
-      {/* 🔹 Scrolling Background Effect */}
-      <motion.div
-        className="absolute top-0 left-0 w-full h-full pointer-events-none"
-        animate={{ y: -scrollY * 0.3 }}
-      >
-        <div className="absolute w-[800px] sm:w-[1000px] h-[800px] sm:h-[1000px] bg-blue-600 opacity-10 blur-3xl top-[20%] left-[50%] transform -translate-x-1/2" />
-      </motion.div>
     </section>
   );
 }
